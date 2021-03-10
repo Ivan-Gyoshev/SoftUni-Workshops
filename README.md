@@ -1,2 +1,2 @@
 # SoftUni-Workshops
-Homework workshops from SoftUni
+Workshops from SoftUni
