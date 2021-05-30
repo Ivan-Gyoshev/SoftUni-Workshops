@@ -39,6 +39,32 @@ namespace BasicWebServer.Http
             }
         }
 
+        private async Task<string> ReadRequest(NetworkStream networkStream)
+        {
+            var bufferLength = 1024;
+            var buffer = new byte[bufferLength];
+
+            var totalBytes = 0;
+
+            var requestBuilder = new StringBuilder();
+
+            while (networkStream.DataAvailable)
+            {
+                var bytesRead = await networkStream.ReadAsync(buffer, 0, bufferLength);
+
+                totalBytes += bytesRead;
+
+                if (totalBytes > 10 * 1024)
+                {
+                    throw new InvalidOperationException("Request is too large.");
+                }
+
+                requestBuilder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
+            }
+
+            return requestBuilder.ToString();
+        }
+
         private async Task WriteResponse(NetworkStream networkStream)
         {
             var content = @"
@@ -58,31 +84,12 @@ Server: My Web Server
 Date: {DateTime.UtcNow:r}
 Content-Length: {contentLength}
 Content-Type: text/html; charset=UTF-8
+
 {content}";
 
             var responseBytes = Encoding.UTF8.GetBytes(response);
+
             await networkStream.WriteAsync(responseBytes);
-        }
-
-        private async Task<string> ReadRequest(NetworkStream networkStream)
-        {
-            var requestBuilder = new StringBuilder();
-            var bufferLength = HttpConstants.bufferLength;
-            var buffer = new byte[bufferLength];
-            var totalBytes = 0;
-
-            while (networkStream.DataAvailable)
-            {
-                var bytesRead = await networkStream.ReadAsync(buffer, 0, bufferLength);
-                totalBytes += bytesRead;
-
-                if (totalBytes * 10 > 1024)
-                {
-                    throw new InvalidOperationException("Request is too large");
-                }
-                requestBuilder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
-            }
-            return requestBuilder.ToString();
         }
     }
 }
