@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicWebServer", "BasicWebServer\BasicWebServer.csproj", "{C1D2D4B0-5CDD-4786-90CB-32F245313180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicWebServer.Http", "BasicWebServer.Http\BasicWebServer.Http.csproj", "{ED679F29-D32B-41F2-9388-5EEDDD6A51E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicWebServer.Server", "BasicWebServer.Http\BasicWebServer.Server.csproj", "{ED679F29-D32B-41F2-9388-5EEDDD6A51E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

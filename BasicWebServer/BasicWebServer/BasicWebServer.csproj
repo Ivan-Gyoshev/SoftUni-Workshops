@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BasicWebServer.Http\BasicWebServer.Http.csproj" />
+    <ProjectReference Include="..\BasicWebServer.Http\BasicWebServer.Server.csproj" />
   </ItemGroup>
 
 </Project>
