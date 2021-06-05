@@ -1,13 +1,13 @@
 ﻿namespace BasicWebServer.Http.Routing
 {
+    using System;
     using BasicWebServer.Http.Common;
     using BasicWebServer.Server.Responses;
-    using System;
     using System.Collections.Generic;
 
     public class RoutingTable : IRoutingTable
     {
-        private readonly Dictionary<HttpMethod, Dictionary<string, HttpResponse>> routes;
+        private readonly Dictionary<HttpMethod, Dictionary<string, Func<HttpRequest, HttpResponse>>> routes;
 
         public RoutingTable() => this.routes = new()
         {
@@ -18,22 +18,35 @@
         };
         public IRoutingTable Map(HttpMethod method, string path, HttpResponse response)
         {
-            Guard.AgainstNull(path, nameof(path));
             Guard.AgainstNull(response, nameof(response));
 
-            this.routes[HttpMethod.Get][path] = response;
-
-            return this;
+            return this.Map(method, path, request => response);
 
         }
 
+        public IRoutingTable Map(HttpMethod method, string path, Func<HttpRequest, HttpResponse> responseFunction)
+        {
+            Guard.AgainstNull(path, nameof(path));
+            Guard.AgainstNull(responseFunction, nameof(responseFunction));
+
+            this.routes[HttpMethod.Get][path] = responseFunction;
+
+            return this;
+        }
+
         public IRoutingTable MapGet(string path, HttpResponse response)
-            => Map(HttpMethod.Get, path, response);
+            => MapGet(path, request => response);
+
+        public IRoutingTable MapGet(string path, Func<HttpRequest, HttpResponse> responseFunction)
+            => Map(HttpMethod.Get, path, responseFunction);
 
         public IRoutingTable MapPost(string path, HttpResponse response)
-            => Map(HttpMethod.Post, path, response);
+            => MapPost(path , request => response);
 
-        public HttpResponse MatchRequest(HttpRequest request)
+        public IRoutingTable MapPost(string path, Func<HttpRequest, HttpResponse> responseFunction)
+            => Map(HttpMethod.Post, path, responseFunction);
+
+        public HttpResponse ExecuteRequest(HttpRequest request)
         {
             var requestMethod = request.Method;
             var requestPath = request.Path;
@@ -45,7 +58,12 @@
                 return new NotFoundResponse();
             }
 
-            return this.routes[requestMethod][requestPath];
+            var responeFunction = this.routes[requestMethod][requestPath];
+
+            return responeFunction(request);
+
+
         }
+
     }
 }
