@@ -12,5 +12,9 @@
         }
 
         public HttpResponse Index() => Text("Hello from Ivan!");
+
+        public HttpResponse ToCats() => Redirect("/Cats");
+
+        public HttpResponse ToSoftUni() => Redirect("https://softuni.bg");
     }
 }

@@ -29,7 +29,7 @@
             Guard.AgainstNull(path, nameof(path));
             Guard.AgainstNull(responseFunction, nameof(responseFunction));
 
-            this.routes[HttpMethod.Get][path] = responseFunction;
+            this.routes[HttpMethod.Get][path.ToLower()] = responseFunction;
 
             return this;
         }
