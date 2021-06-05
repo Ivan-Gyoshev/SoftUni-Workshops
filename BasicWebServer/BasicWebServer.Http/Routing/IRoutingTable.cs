@@ -1,5 +1,6 @@
 ﻿namespace BasicWebServer.Http
 {
+    using BasicWebServer.Server;
     using System;
 
     public interface IRoutingTable
@@ -14,5 +15,6 @@
 
         IRoutingTable MapPost(string path, HttpResponse response);
 
+        IRoutingTable MapPost(string path, Func<HttpRequest, HttpResponse> responseFunction);
     }
 }
