@@ -55,7 +55,7 @@
             if (!this.routes.ContainsKey(requestMethod)
                 || !this.routes[requestMethod].ContainsKey(requestPath))
             {
-                return new NotFoundResponse();
+                return new NotFoundResult();
             }
 
             var responeFunction = this.routes[requestMethod][requestPath];

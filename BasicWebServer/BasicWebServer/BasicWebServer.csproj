@@ -9,4 +9,14 @@
     <ProjectReference Include="..\BasicWebServer.Http\BasicWebServer.Server.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="Views\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Views\Animals\Wild\Turtles.cshtml" />
+	</ItemGroup>
+
 </Project>
